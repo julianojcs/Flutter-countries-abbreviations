@@ -9,7 +9,7 @@ mixin Message {
       msg,
       duration: duration,
       gravity: gravity,
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Colors.orangeAccent,
       backgroundRadius: 3.0,
       textStyle: const TextStyle(fontSize: 15, color: Colors.black),
     );

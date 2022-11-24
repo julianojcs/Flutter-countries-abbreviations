@@ -16,7 +16,7 @@ class Menu extends StatelessWidget with Message {
             children: [
               Container(
                 alignment: Alignment.center,
-                color: Colors.blue,
+                color: Colors.orangeAccent,
                 height: 100,
                 child: const Text(
                   'Menu',
@@ -32,67 +32,50 @@ class Menu extends StatelessWidget with Message {
                 onTap: () {
                   Navigator.pop(context);
                   showDialog(
-                      // context: context,
-                      // builder: (BuildContext context) => SimpleDialog(
-                      //   title: const Text('Enter country name'),
-                      //   children: [
-                      //     Padding(
-                      //       padding: const EdgeInsets.all(20.0),
-                      //       child: TextField(
-                      //         controller: _search,
-                      //       ),
-                      //     ),
-                      //     Row(
-                      //       mainAxisAlignment: MainAxisAlignment.end,
-                      //       children: [
-                      //         TextButton(
-                      //           onPressed: () {
-                      //             Navigator.pop(context);
-                      //           },
-                      //           child: const Text(
-                      //             'Cancel',
-                      //             style: TextStyle(color: Colors.grey),
-                      //           ),
-                      //         ),
-                      //         Padding(
-                      //           padding: const EdgeInsets.fromLTRB(
-                      //               0.0, 0.0, 20.0, 0.0),
-                      //           child: TextButton(
-                      //             onPressed: () {
-                      //               Navigator.pop(context);
-                      //               Navigator.push(context, MaterialPageRoute(
-                      //                 builder: (BuildContext context) => CountriesScreen(country: _search.text)
-                      //               ));
-                      //             },
-                      //             child: const Text(
-                      //               'Search',
-                      //               style: TextStyle(color: Colors.blueAccent),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     )
-                      //   ],
-                      // ),
-
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text('Search',
                               style: TextStyle(
                                   fontSize: 20.0,
-                                  color: Colors.blueAccent,
+                                  color: Colors.orangeAccent,
                                   fontWeight: FontWeight.bold)),
                           content: TextField(
                             controller: _search,
                             decoration: const InputDecoration(
                               labelText: 'Enter country name',
+                              labelStyle: TextStyle(color: Colors.orangeAccent),
                               hintText: 'Country name',
-                              border: OutlineInputBorder(),
+                              // border: OutlineInputBorder(
+                              //   borderSide: BorderSide(
+                              //       color: Colors.orangeAccent,
+                              //       width: 0.0
+                              //   ), // width: 0.0 produces a thin "hairline" border
+                              //   borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                              // ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.orangeAccent,
+                                    width:
+                                        0.0), // width: 0.0 produces a thin "hairline" border
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.orangeAccent,
+                                    width:
+                                        0.0), // width: 0.0 produces a thin "hairline" border
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
                             ),
                           ),
                           actions: [
                             ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orangeAccent,
+                              ),
                               onPressed: () {
                                 Navigator.pop(context);
                                 Navigator.push(

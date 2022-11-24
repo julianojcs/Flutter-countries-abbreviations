@@ -42,22 +42,30 @@ class _CountriesDataState extends State<CountriesData> with Message {
           shrinkWrap: true,
           itemCount: countries.length,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              child: Card(
-                child: ExpansionTile(
-                  title: Text("${countries[index]["name"]}",
-                    style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold, fontSize: 20.0),),
+                return Card(
+                    child: ExpansionTile(
+                  title: Text(
+                    "${countries[index]["name"]}",
+                    style: const TextStyle(
+                        color: Colors.orangeAccent,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0),
+                  ),
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 20.0),
                       child: Container(
-                      alignment: Alignment.centerLeft,
-                        child: Text("${countries[index]["code"] ?? "Not informed"}",
-                          style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 16.0),),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "${countries[index]["code"] ?? "Not informed"}",
+                          style: const TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0),
+                        ),
                       ),
                     ),
                   ],
-                )
               )
             );
           },

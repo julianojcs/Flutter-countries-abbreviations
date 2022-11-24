@@ -9,21 +9,38 @@ class Sobre extends StatelessWidget {
       appBar: AppBar(
         title: const Text('About'),
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: const [
-              Text('Application developed for study purposes.', style: TextStyle(fontSize: 20.0),),
-              SizedBox(height: 20.0,),
-              Text('Developed by:', style: TextStyle(fontSize: 20.0),),
-              SizedBox(height: 16.0,),
-              Text('Juliano Costa Silva', style: TextStyle(fontSize: 20.0, color: Colors.redAccent, fontWeight: FontWeight.bold),),
-              SizedBox(height: 20.0,),
-              Text('This application aims to list and search the abbreviations of countries in the world.'),
-            ],
-          ),
-      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: const [
+            Text(
+              'Application developed for study purposes.',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Text(
+              'Developed by:',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Text(
+              'Juliano Costa Silva',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.orangeAccent,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Text(
+                'This application aims to list and search the abbreviations of countries in the world.'),
+          ],
+        ),
       ),
     );
   }
