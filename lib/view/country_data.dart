@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sigla_paises_app/service/request.dart';
+import 'package:sigla_paises_app/view/message.dart';
 
 class CountriesData extends StatefulWidget {
-  const CountriesData({super.key});
+  final String country;
+  const CountriesData({super.key, this.country = ""});
 
   @override
   State<CountriesData> createState() => _CountriesDataState();
 }
 
-class _CountriesDataState extends State<CountriesData> {
+class _CountriesDataState extends State<CountriesData> with Message {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +21,8 @@ class _CountriesDataState extends State<CountriesData> {
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
               if (snapshot.hasData) {
                 List countries = snapshot.data as List<dynamic>;
-                return _listCountries(countries);
+                return _listCountries(
+                    _handleFilter(widget.country, countries, context));
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -67,5 +70,24 @@ class _CountriesDataState extends State<CountriesData> {
           child: Text('Loading...', style: TextStyle(fontSize: 16.0)),
         ),
       );
+  }
+
+  List _handleFilter(String filter, List countries, BuildContext context) {
+    if (filter != "") {
+      List filteredCountries = [];
+
+      for (var country in countries) {
+        if (country["name"]
+            .toString()
+            .toLowerCase()
+            .contains(filter.toLowerCase())) {
+          filteredCountries.add(country);
+        }
+      }
+      if (filteredCountries.isEmpty) showMessage('No country found!', context);
+      return filteredCountries;
+    } else {
+      return countries;
+    }
   }
 }

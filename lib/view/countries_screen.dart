@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sigla_paises_app/service/request.dart';
 import 'package:sigla_paises_app/view/menu.dart';
 import 'package:sigla_paises_app/view/country_data.dart';
 
 class CountriesScreen extends StatelessWidget {
-  const CountriesScreen({super.key});
+  final String country;
+  const CountriesScreen({this.country = "", super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +15,23 @@ class CountriesScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              Request.requestCountry();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        const CountriesScreen(country: ""),
+                  ));
             },
           ),
         ],
       ),
-      body: const CountriesData(),
-      drawer: const Menu(),
+      body: CountriesData(country: country),
+      // .isEmpt
+      //   ? const Center(
+      //       child: CircularProgressIndicator(),
+      //     )
+      //   : CountriesData(country: country),
+      drawer: Menu(),
     );
   }
 }
