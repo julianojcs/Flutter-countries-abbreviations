@@ -25,12 +25,7 @@ class CountriesScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: CountriesData(country: country),
-      // .isEmpt
-      //   ? const Center(
-      //       child: CircularProgressIndicator(),
-      //     )
-      //   : CountriesData(country: country),
+      body: CountriesData(country: country, countriesState: []),
       drawer: Menu(),
     );
   }

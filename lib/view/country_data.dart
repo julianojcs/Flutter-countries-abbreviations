@@ -4,7 +4,10 @@ import 'package:sigla_paises_app/view/message.dart';
 
 class CountriesData extends StatefulWidget {
   final String country;
-  const CountriesData({super.key, this.country = ""});
+  final List countriesState;
+
+  const CountriesData(
+      {super.key, this.country = "", required this.countriesState});
 
   @override
   State<CountriesData> createState() => _CountriesDataState();
@@ -13,25 +16,31 @@ class CountriesData extends StatefulWidget {
 class _CountriesDataState extends State<CountriesData> with Message {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          FutureBuilder(
-            future: Request.requestCountry(),
-            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-              if (snapshot.hasData) {
-                List countries = snapshot.data as List<dynamic>;
-                return _listCountries(
-                    _handleFilter(widget.country, countries, context));
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+    return Column(
+      children: [
+        FutureBuilder(
+          future: Request.requestCountry(),
+          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+            if (snapshot.hasData) {
+              List countries = snapshot.data as List<dynamic>;
+              for (var country in countries) {
+                widget.countriesState.add({
+                  "name": country["name"],
+                  "code": country["code"],
+                  "isVisible": false
+                });
               }
-            },
-          )
-        ],
-      ),
+              return _listCountries(
+                  _handleFilter(
+                  widget.country, widget.countriesState, context));
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        )
+      ],
     );
   }
 
@@ -43,17 +52,25 @@ class _CountriesDataState extends State<CountriesData> with Message {
           itemCount: countries.length,
           itemBuilder: (BuildContext context, int index) {
                 return Card(
-                    child: ExpansionTile(
-                  title: Text(
-                    "${countries[index]["name"]}",
-                    style: const TextStyle(
-                        color: Colors.orangeAccent,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0),
+                    child: ListTile(
+                  title: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "${countries[index]["name"]}",
+                        style: const TextStyle(
+                            color: Colors.orangeAccent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0),
+                      ),
+                    ),
                   ),
-                  children: [
+                  subtitle: countries[index]["isVisible"]
+                      ?
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 20.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(30.0, 0.0, 10.0, 10.0),
                       child: Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -64,8 +81,15 @@ class _CountriesDataState extends State<CountriesData> with Message {
                               fontSize: 16.0),
                         ),
                       ),
-                    ),
-                  ],
+                        )
+                      : null,
+                  onTap: () {
+                    debugPrint(countries[index]["isVisible"].toString());
+                    setState(() {
+                      countries[index]["isVisible"] =
+                          !countries[index]["isVisible"];
+                    });
+                  },
               )
             );
           },
