@@ -14,25 +14,30 @@ class CountriesData extends StatefulWidget {
 }
 
 class _CountriesDataState extends State<CountriesData> with Message {
+  final Future<List<dynamic>> _countriesData = Request.requestCountry();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         FutureBuilder(
-          future: Request.requestCountry(),
+          future: _countriesData,
           builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+            // debugPrint("CountriesData: ${widget.countriesState}");
             if (snapshot.hasData) {
               List countries = snapshot.data as List<dynamic>;
-              for (var country in countries) {
-                widget.countriesState.add({
-                  "name": country["name"],
-                  "code": country["code"],
-                  "isVisible": false
-                });
+              if (widget.country != "") {
+                countries = countries
+                    .where((country) =>
+                        country["name"].toLowerCase().contains(widget.country))
+                    .toList();
+                if (countries.isEmpty)
+                  showMessage('No country found!', context);
               }
-              return _listCountries(
-                  _handleFilter(
-                  widget.country, widget.countriesState, context));
+              widget.countriesState.clear();
+              for (var country in countries) {
+                widget.countriesState.add(country);
+              }
+              return _listCountries();
             } else {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -44,12 +49,11 @@ class _CountriesDataState extends State<CountriesData> with Message {
     );
   }
 
-  Widget _listCountries(List countries) {
-    return countries != null
-    ? Flexible(
+  Widget _listCountries() {
+    return Flexible(
         child: ListView.builder(
           shrinkWrap: true,
-          itemCount: countries.length,
+        itemCount: widget.countriesState.length,
           itemBuilder: (BuildContext context, int index) {
                 return Card(
                     child: ListTile(
@@ -58,7 +62,7 @@ class _CountriesDataState extends State<CountriesData> with Message {
                     child: Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "${countries[index]["name"]}",
+                  "${widget.countriesState[index]["name"]}",
                         style: const TextStyle(
                             color: Colors.orangeAccent,
                             fontWeight: FontWeight.bold,
@@ -66,7 +70,7 @@ class _CountriesDataState extends State<CountriesData> with Message {
                       ),
                     ),
                   ),
-                  subtitle: countries[index]["isVisible"]
+            subtitle: widget.countriesState[index]["isVisible"]
                       ?
                     Padding(
                           padding:
@@ -74,7 +78,7 @@ class _CountriesDataState extends State<CountriesData> with Message {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "${countries[index]["code"] ?? "Not informed"}",
+                        "${widget.countriesState[index]["code"] ?? "Not informed"}",
                           style: const TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.bold,
@@ -84,42 +88,16 @@ class _CountriesDataState extends State<CountriesData> with Message {
                         )
                       : null,
                   onTap: () {
-                    debugPrint(countries[index]["isVisible"].toString());
+              debugPrint(widget.countriesState[index]["isVisible"].toString());
                     setState(() {
-                      countries[index]["isVisible"] =
-                          !countries[index]["isVisible"];
+                widget.countriesState[index]["isVisible"] =
+                    !widget.countriesState[index]["isVisible"];
                     });
                   },
               )
             );
           },
-        ),
-      )
-    : Container(
-        alignment: Alignment.center,
-        child: const Padding(
-          padding: EdgeInsets.all(50.0),
-          child: Text('Loading...', style: TextStyle(fontSize: 16.0)),
-        ),
+      ),
       );
-  }
-
-  List _handleFilter(String filter, List countries, BuildContext context) {
-    if (filter != "") {
-      List filteredCountries = [];
-
-      for (var country in countries) {
-        if (country["name"]
-            .toString()
-            .toLowerCase()
-            .contains(filter.toLowerCase())) {
-          filteredCountries.add(country);
-        }
-      }
-      if (filteredCountries.isEmpty) showMessage('No country found!', context);
-      return filteredCountries;
-    } else {
-      return countries;
-    }
   }
 }
